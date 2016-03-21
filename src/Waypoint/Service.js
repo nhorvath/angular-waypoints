@@ -21,8 +21,9 @@ WaypointService.prototype.getHandlerSync = function getHandlerSync(scope, callba
 
 	return function(direction) {
 		var waypoint = scope[direction];
-		if (waypoint) {
-			timeout(angular.bind(null, callback, waypoint));
+		if (!waypoint) {
+			waypoint = direction;
 		}
+		timeout(angular.bind(null, callback, waypoint));
 	};
 };
