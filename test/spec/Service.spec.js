@@ -17,14 +17,25 @@
 			}));
 
 			describe('handler function', function() {
-				it('will do nothing if the scope does not contain a valid property', function() {
+				it('will do nothing if the scope property contains "ignore"', function() {
+					inject(function(WaypointService, $timeout) {
+						var callback = jasmine.createSpy('callback');
+						var handler = WaypointService.getHandlerSync({ down: 'ignore' }, callback);
+
+						handler('down');
+						$timeout.verifyNoPendingTasks();
+						expect(callback).not.toHaveBeenCalled();
+					});
+				});
+
+				it('executes the callback on the next tick with direction value', function() {
 					inject(function(WaypointService, $timeout) {
 						var callback = jasmine.createSpy('callback');
 						var handler = WaypointService.getHandlerSync({}, callback);
 
 						handler('down');
-						$timeout.verifyNoPendingTasks();
-						expect(callback).not.toHaveBeenCalled();
+						$timeout.flush();
+						expect(callback).toHaveBeenCalledWith('down');
 					});
 				});
 

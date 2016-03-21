@@ -10,10 +10,10 @@
 }(this, function (angular) {
 	
 	/**
-	 * Zumba(r) Angular Waypoints v2.0.0 - 2015-12-04
+	 * Zumba(r) Angular Waypoints v2.0.0 - 2016-03-21
 	 * An AngularJS module for working with Waypoints
 	 *
-	 * Copyright (c) 2015 Zumba (r)
+	 * Copyright (c) 2016 Zumba (r)
 	 * Licensed MIT
 	 */
 	/**
@@ -39,9 +39,13 @@
 	
 		return function(direction) {
 			var waypoint = scope[direction];
-			if (waypoint) {
-				timeout(angular.bind(null, callback, waypoint));
+			if (!waypoint) {
+				waypoint = direction;
+			} else if (waypoint == "ignore") {
+				return;
 			}
+	
+			timeout(angular.bind(null, callback, waypoint));
 		};
 	};
 	
@@ -136,6 +140,7 @@
 					handler : WaypointService.getHandlerSync(scope, callback),
 					offset : scope.offset || 0
 				});
+				/*jshint +W031 */
 			}
 		};
 	};

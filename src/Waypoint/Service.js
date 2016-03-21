@@ -23,7 +23,10 @@ WaypointService.prototype.getHandlerSync = function getHandlerSync(scope, callba
 		var waypoint = scope[direction];
 		if (!waypoint) {
 			waypoint = direction;
+		} else if (waypoint == "ignore") {
+			return;
 		}
+
 		timeout(angular.bind(null, callback, waypoint));
 	};
 };
